@@ -1,0 +1,89 @@
+/* body{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.wrap{
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+.product-cover{
+    width: 100%;
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.card{
+    height: 150px;
+    padding: 30px;
+    color: white;
+    line-height: 150px;
+}
+
+.grey{
+    background-color: gray;
+}
+
+.blue{
+    background-color: #115588;
+}
+
+.pagination{
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    text-decoration: none;
+    padding: 0;
+}
+
+.pagination-item a{
+    border: 2px solid #EEE;
+    padding: 4px 14px;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 32px;
+    text-decoration: none;
+    color: gray;
+}
+
+.pagination-item:not(:last-child){
+    margin-right: 10px;
+}
+
+.pagination-item.active a{
+    background-color: #bbddff;
+    border-color: #bbddff;
+}
+
+.pagination-item:hover a{
+    border-color: #bbddff;
+}
+
+.pagination-item.disable{
+    opacity: .6;
+}
+
+.buttons{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+} */
+
+
+p{
+    padding: 10px 20px;
+    border-radius: 6px;
+}
+
+.red{
+    border: 2px solid red;
+    background: #FFCCCC;
+}
+
+.green{
+    border: 2px solid 00AA00;
+    background: #DDFFDD;
+}

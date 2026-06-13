@@ -1,0 +1,38 @@
+/* .cities{
+    display: none;
+}
+
+.cities.active{
+    display: inline-block;
+} */
+
+
+/* #container{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    max-width: 540px;
+    margin: 50px auto;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+} */
+
+
+/* Домашний калькулятор денег */
+
+.currency{
+    margin-top: 10px;
+    cursor: pointer;
+
+}
+
+.currency:hover{
+    background-color: grey;
+    color: white;
+}
+
+#sum{
+    font-weight: bold;
+    margin-top: 5px;
+}

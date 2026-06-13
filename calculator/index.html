@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Calculator Online</h1>
+    <div class="calc">
+        <input type="text" id="firstNumber" class="active"> <!-- type number -->
+            <select name="" id="operator">
+                <option value="" selected></option>
+                <option value="+">+</option>
+                <option value="-">-</option>
+                <option value="/">/</option>
+                <option value="*">*</option>
+            </select>
+        <input type="text" id="secondNumber" class="disabled">
+        <button>=</button>
+        <div id="result"></div>
+
+        <div class="numbersButtons">
+            <button id="n1">1</button>
+            <button id="n2">2</button>
+            <button id="n3">3</button>
+            <button id="n4">4</button>
+            <button id="n5">5</button>
+            <button id="n6">6</button>
+            <button id="n7">7</button>
+            <button id="n8">8</button>
+            <button id="n9">9</button>
+        </div>
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
