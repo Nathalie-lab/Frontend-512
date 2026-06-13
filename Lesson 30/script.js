@@ -111,30 +111,134 @@ console.log(Object.entries(menu)); */
 
 //Домашняя работа
 
-// Получаем доступ к input по id
-let emailInput = document.getElementById('email');
+//Получаем доступ к input по id
+// let emailInput = document.getElementById('email');
 
 
 // Регулярное выражение для проверки
-let emailRegex = /^[\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
+//let emailRegex = /^[\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
 
-emailInput.addEventListener('input', checkEmail);
+// emailInput.addEventListener('input', checkEmail);
     
-function checkEmail(){
-    //Получаем, что пришло в поле ввода     
-    let value = emailInput.value;
+// function checkEmail(){
+//     //Получаем, что пришло в поле ввода     
+//     let value = emailInput.value;
 
-    // Если поле пустое, убираем подсветку ошибки
-    if (value.length === 0) {
-        emailInput.classList.remove('invalid');
+//Если поле пустое, убираем подсветку ошибки
+//     if (value.length === 0) {
+//         emailInput.classList.remove('invalid');
+//         return;
+//     }
+
+// Проверяем текст на соответствие регулярному выражению
+//     if (emailRegex.test(value)) {
+//         emailInput.classList.remove('invalid'); // Совпадает
+//     } else {
+//         emailInput.classList.add('invalid'); // Не совпадает
+//     }   
+// }; 
+
+
+//КРЕСТИКИ-НОЛИКИ
+/* 
+let area = document.getElementById("area");
+let currentPlayer = document.getElementById("curPlayer");
+let cell;
+
+let player = "x";
+let stat = {
+    'x': 0,
+    'o': 0,
+    'd': 0,
+}
+
+let winIndex = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+    [1, 4, 7],
+    [2, 5, 8],
+    [3, 6, 9],
+    [1, 5, 9],
+    [3, 5, 7]
+];
+
+for(let i = 1; i <= 9; i++){
+    area.innerHTML += "<div class='cell' data-pos='"+ i +"'>";
+}
+cell = document.querySelectorAll(".cell");
+
+for(let i = 0; i < cell.length; i++){
+    cell[i].addEventListener("click", cellClick);
+}
+
+function cellClick(){
+    let data = [];
+
+    if(!this.innerHTML){
+        this.innerHTML = player;
+    }else{
+        alert("Ячейка занята!");
         return;
     }
 
-    // Проверяем текст на соответствие регулярному выражению
-    if (emailRegex.test(value)) {
-        emailInput.classList.remove('invalid'); // Совпадает
-    } else {
-        emailInput.classList.add('invalid'); // Не совпадает
-    }   
-};
+    for(let i in cell){
+        if(cell[i].innerHTML == player){
+            data.push(cell[i].getAttribute("data-pos"));
+        }
+    }
 
+    if(checkWin(data)){
+        stat[player] +=1;
+        restart("Выиграл: " + player)
+    }else{
+        let draw = true;
+        for(let i in cell){
+            if(cell[i].innerHTML == ''){
+                draw = false;
+            }
+        }
+        if(draw){
+            stat.d += 1;
+            restart("Ничья");
+        }
+    }
+
+    player = player == 'x' ? "o" : "x";
+    currentPlayer.innerHTML = player.toUpperCase();
+
+    console.log(data);
+}
+
+
+function checkWin(data){
+    for (let i in winIndex){
+        let win = true;
+        for(let j in winIndex[i]){
+            let id = String(winIndex[i][j]);
+            let ind = data.indexOf(id);
+
+            if(ind == -1){
+                win = false;
+            }
+        }
+        if(win){
+        return true;
+        }
+    }
+    return false;
+}
+
+function restart(text){
+    alert(text);
+    for(let i = 0; i < cell.length; i++){
+        cell[i].innerHTML = "";
+    }
+    updateStat();
+}
+
+function updateStat(){
+    document.getElementById("sX").innerHTML = stat.x;
+    document.getElementById("sO").innerHTML = stat.o;
+    document.getElementById("sD").innerHTML = stat.d;
+} */
