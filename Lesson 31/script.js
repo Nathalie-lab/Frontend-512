@@ -102,3 +102,46 @@ document.writeln(f + " " +  l + " " + rest.psw + " " + rest.role); */
 //Создать объект , который выиграл автомобиль (цвет случайным образом из массива). в оъекте хранится имя в значении ключа, массив цветов, и сама марка автомобиля. вывд ин-ии идет через метод документ райт лн
 //Получаем строку Игорь выиграл красный мерседес - постоянная и постоянная
 //math random
+
+//Делаем место для ввода имени
+document.body.insertAdjacentHTML('beforeend', '<h1>Розыгрыш автомобиля!</h1>');
+document.body.insertAdjacentHTML('beforeend', '<input type="text" id="inputName" placeholder="Введите Ваше имя">');
+document.body.insertAdjacentHTML('beforeend', '<button id="btn">Участвовать</button>');
+document.body.insertAdjacentHTML('beforeend', '<div id="forResult"></div>')
+
+let name = document.getElementById("inputName");
+let button = document.getElementById("btn");
+let result = document.getElementById("forResult");
+
+let winCar = {
+    types: [
+        "Mercedes",
+        "BMW",
+        "Renault",
+        "Lada",
+        "Hyundai",
+    ],
+    colors: [
+        "White",
+        "Black",
+        "Red",
+        "Green",
+        "Blue",
+        "Silver",
+        "Golden",
+    ],
+} 
+
+button.addEventListener('click', function() {
+    let userName = name.value;
+    if (userName.trim() === "") {
+        alert("Поле пустое! Введите имя.");
+    }else{
+        let typeIndex = Math.floor(Math.random() * winCar.types.length);
+        let randomCar = winCar.types[typeIndex];
+        let colorIndex = Math.floor(Math.random() * winCar.colors.length);
+        let randomColor = winCar.colors[colorIndex];
+
+        result.innerHTML = "<h3>Поздравляем, " + userName + "! Вы выиграли автомобиль: " + randomColor + " " + randomCar + "!</h3>";
+    }
+});
