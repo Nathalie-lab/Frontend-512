@@ -1,4 +1,4 @@
-//let box = document.querySelector(".box");
+/* //let box = document.querySelector(".box");
 
 /* let width = box.clientWidth;
 let height = box.clientHeight; */
@@ -35,7 +35,7 @@ document.querySelector("button").addEventListener("click", function(){  */
         box.style.overflow = "";
     }
     flag = !flag;
-}) */
+})
 
 let win = null;
 
@@ -55,4 +55,4 @@ close.addEventListener("click", function(){
     if(typeof win == "object"){
         win.close();
     }
-})
+}) */

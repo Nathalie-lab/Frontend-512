@@ -62,17 +62,25 @@ function getRandom(min, max){
     return Math.floor(Math.random() * (max - min) + min);
 }
 
+function getRandomColor(){
+    let r = getRandom(0, 256);
+    let g = getRandom(0, 256);
+    let b = getRandom(0, 256);
+    return `rgb(${r}, ${g}, ${b})`;
+}
+
 function renderBox(){
     game.innerHTML = "";
 
-    let box = document.createElement("div"); let boxSize = getRandom(30, 100);
+    let box = document.createElement("div"); 
+    let boxSize = getRandom(30, 100);
     let gameSize = game.getBoundingClientRect();
     let maxTop = gameSize.height - boxSize;
     let maxLeft = gameSize.width - boxSize;
 
 
     box.style.width = box.style.height = boxSize + "px";
-    box.style.background = "#000";
+    box.style.background = getRandomColor();
     box.style.position = "absolute";
     box.style.left = getRandom(0, maxLeft) + "px";
     box.style.top = getRandom(0, maxTop) + "px";
