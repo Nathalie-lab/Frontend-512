@@ -11,13 +11,13 @@ let height = box.scrollHeight; */
 
 //console.log(width, height);
 
-//Свернуть и развернуть блок
-/* let flag = 1;
+/* Свернуть и развернуть блок
+let flag = 1;
 let hh = box.scrollHeight;
 let off = box.offsetHeight;
 
-document.querySelector("button").addEventListener("click", function(){  */
-/*     if(flag == 1){
+document.querySelector("button").addEventListener("click", function(){
+    if(flag == 1){
         box.style.height = hh + "px";
         flag = 0;
     } else {
@@ -37,7 +37,7 @@ document.querySelector("button").addEventListener("click", function(){  */
     flag = !flag;
 })
 
-let win = null;
+let win = null; */
 
 
 let open = document.querySelector("#show");
@@ -55,4 +55,4 @@ close.addEventListener("click", function(){
     if(typeof win == "object"){
         win.close();
     }
-}) */
+})
