@@ -218,7 +218,7 @@ user.sayHi(); */
 let User = makeClass("Привет");
 new User().sayHi(); */
 
-class Rectangle{
+/* class Rectangle{
     constructor(height, width){
         this.height = height;
         this.width = width;
@@ -233,7 +233,7 @@ let rectangle = new Rectangle(10, 20);
 rectangle.color = "red";
 console.log(rectangle);
 
-console.log(rectangle.area());
+console.log(rectangle.area()); */
 
 //Создать два класса КРУГ И ТРЕУГОЛЬНИК. Найти площадь и периметр
 
