@@ -104,7 +104,6 @@ c.shadowColor = "#AAA";
 
 c.fillText("Hello, World!", canvas.width /2, canvas.height / 2); */
 
-
 /* let pic = new Image();
 pic.src = "card1.png";
 pic.addEventListener("load", function(){
@@ -118,9 +117,9 @@ gr.addColorStop(0, "red");
 gr.addColorStop(0.4, "magenta");
 gr.addColorStop(1, "yellow");
 c.fillStyle = gr;
-c.fillRect(320, 170, 150, 60);
+c.fillRect(320, 170, 150, 60); */
 
-let st = c.createLinearGradient(320,0, 470, 0);
+/* let st = c.createLinearGradient(320,0, 470, 0);
 st.addColorStop(0, "red");
 st.addColorStop(1, "yellow");
 c.strokeStyle = st;
@@ -131,9 +130,9 @@ c.strokeRect(320, 170, 150, 60); */
 grd.addColorStop(0, "red");
 grd.addColorStop(1, "yellow");
 c.fillStyle = grd;
-c.fillRect(320, 240, 150, 60);
+c.fillRect(320, 240, 150, 60); */
 
-c.shadowOffsetX = 10;
+/* c.shadowOffsetX = 10;
 c.shadowOffsetY = 15;
 c.shadowBlur = 10;
 c.shadowColor = "#0f0";
@@ -148,22 +147,20 @@ c.arc(75, 75, 75, 0, Math.PI *2);
 c.closePath();
 c.fill(); */
 
+/* c.fillStyle = "brown";
+c.fillRect(50, 50, 100, 100);
+c.fillStyle = "orange";
+c.globalAlpha = 0.5;
+c.translate(50, 25);
+c.rotate(.52);
+c.scale(1.5, 1.5);
+c.fillRect(50, 50, 100, 100); */
 
-//c.fillStyle = "brown";
-//c.fillRect(50, 50, 100, 100);
-//c.fillStyle = "orange";
-//c.globalAlpha = 0.5;
-//c.translate(50, 25);
-//c.rotate(.52);
-//c.scale(1.5, 1.5);
-//c.fillRect(50, 50, 100, 100);
-
-/* const w = canvas.width;
+const w = canvas.width;
 const h = canvas.height;
 
 const mouse = {x: 0, y: 0};
 let draw = false;
-
 
 //нажатие мыши
 canvas.addEventListener("mousedown", function(e){
@@ -179,6 +176,9 @@ canvas.addEventListener("mousemove", function(e){
     if(draw){
         mouse.x = e.pageX - this.offsetLeft;
         mouse.y = e.pageY - this.offsetTop;
+        c.lineCap = "round";  
+        c.lineJoin = "round";
+        c.lineWidth = 5; 
         c.lineTo(mouse.x, mouse.y);
         c.stroke();
     }
@@ -192,37 +192,37 @@ canvas.addEventListener("mouseup", function(e){
         c.stroke();
         c.closePath();
         draw = false;
-}); */
+});
 
 
 //ДОМАШНЕЕ ЗАДАНИЕ ДО КАНИКУЛ
 
 //БОЛЬШОЙ КРУГ
-c.beginPath();
-c.arc(300, 150, 50, 0, Math.PI * 2);
-c.fillStyle = '#FFDE00';
-c.fill();
-c.closePath();
-c.stroke();
+// c.beginPath();
+// c.arc(300, 150, 50, 0, Math.PI * 2);
+// c.fillStyle = '#FFDE00';
+// c.fill();
+// c.closePath();
+// c.stroke();
 
-//КРИВАЯ УЛЫБКА
-c.beginPath();
-c.moveTo(270, 165);
-c.quadraticCurveTo(300, 195, 330, 165);
-c.stroke();
+// //КРИВАЯ УЛЫБКА
+// c.beginPath();
+// c.moveTo(270, 165);
+// c.quadraticCurveTo(300, 195, 330, 165);
+// c.stroke();
 
-//ЛЕВЫЙ ГЛАЗ
-c.beginPath();
-c.arc(285, 135, 5, 0, Math.PI * 2);
-c.fillStyle = 'white';
-c.fill();
-c.closePath();
-c.stroke();
+// //ЛЕВЫЙ ГЛАЗ
+// c.beginPath();
+// c.arc(285, 135, 5, 0, Math.PI * 2);
+// c.fillStyle = 'white';
+// c.fill();
+// c.closePath();
+// c.stroke();
 
-//ПРАВЫЙ ГЛАЗ
-c.beginPath();
-c.arc(315, 135, 5, 0, Math.PI * 2);
-c.fillStyle = 'white';
-c.fill();
-c.closePath();
-c.stroke();
+// //ПРАВЫЙ ГЛАЗ
+// c.beginPath();
+// c.arc(315, 135, 5, 0, Math.PI * 2);
+// c.fillStyle = 'white';
+// c.fill();
+// c.closePath();
+// c.stroke();

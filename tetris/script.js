@@ -1,9 +1,24 @@
 class Game {
+
+    static points = {
+        "1": 40,
+        "2": 100,
+        "3": 300,
+        "4": 1200,
+    };
+
+    score = 0;
+    lines = 0;
+
     playfield = this.createPlayfield();
  
     activePiece = this.createPiece();
     nextPiece = this.createPiece();
  
+    getLevel(){
+        return Math.floor(this.lines / 10) + 1;
+    }
+
     getState() {
         const playfield = this.createPlayfield();
         const { y: pieceY, x: pieceX, blocks } = this.activePiece;
@@ -25,6 +40,10 @@ class Game {
         }
  
         return {
+            score: this.score,
+            level: this.getLevel(),
+            lines: this.lines,
+            nextPiece: this.nextPiece,
             playfield
         }
     }
@@ -51,10 +70,50 @@ class Game {
         if (this.hasCollision()) {
             this.activePiece.y--;
             this.lockPiece();
+            const clearLines = this.clearLines();
+            this.updateScore(clearLines);
             this.updatePieces();
         }
     }
- 
+
+    updateScore(clearedLines){
+        if(clearedLines > 0){
+            this.score += Game.points[clearedLines];
+            this.lines += clearedLines;
+            console.log(this.score, this.lines, this.getLevel());
+        }
+    }
+
+    clearLines(){
+        const rows = 20;
+        const columns = 10;
+        let lines = [];
+        for (let y = rows - 1; y >= 0; y--) {
+            let numberOfBlocks = 0;
+
+            for (let x = 0; x < columns; x++) {
+                if(this.playfield[y][x]){
+                    numberOfBlocks++;
+                }
+            }
+
+            if(numberOfBlocks === 0){
+                break;
+            }else if(numberOfBlocks < columns){
+                continue;
+            } else{
+                lines.unshift(y);
+            }
+        }
+
+        for (let index of lines) {
+            this.playfield.splice(index, 1);
+            this.playfield.unshift(new Array(columns).fill(0)); 
+        }
+
+        return lines.length;
+    }
+
     hasCollision() {
         const { y: pieceY, x: pieceX, blocks } = this.activePiece;
  
@@ -115,7 +174,7 @@ class Game {
         }
     }
  
-    updatePieces(){
+    updatePieces() {
         this.activePiece = this.nextPiece;
         this.nextPiece = this.createPiece();
     }
@@ -123,71 +182,86 @@ class Game {
     createPiece() {
         const index = Math.floor(Math.random() * 7);
         const type = "IJLOSTZ"[index];
-        const piece = {x: 0, y: 0};
-
-        switch(type){
+        const piece = {};
+ 
+        switch (type) {
             case "I":
                 piece.blocks = [
-                [0, 0, 0, 0],
-                [1, 1, 1, 1],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-            ];
-            break;
+                    [0, 0, 0, 0],
+                    [1, 1, 1, 1],
+                    [0, 0, 0, 0],
+                    [0, 0, 0, 0]
+                ];
+                break;
             case "J":
                 piece.blocks = [
-                [0, 0, 0],
-                [1, 1, 1],
-                [0, 0, 1],
-            ];
-            break;
+                    [0, 0, 0],
+                    [2, 2, 2],
+                    [2, 0, 0]
+                ];
+                break;
             case "L":
                 piece.blocks = [
-                [0, 0, 0],
-                [1, 1, 1],
-                [1, 0, 0],
-            ];
-            break;
+                    [0, 0, 0],
+                    [3, 3, 3],
+                    [0, 0, 3]
+                ];
+                break;
+ 
             case "O":
                 piece.blocks = [
-                [0, 0, 0, 0],
-                [0, 1, 1, 0],
-                [0, 1, 1, 0],
-                [0, 0, 0, 0],
-            ];
-            break;
+                    [0, 0, 0, 0],
+                    [0, 4, 4, 0],
+                    [0, 4, 4, 0],
+                    [0, 0, 0, 0]
+                    // [1,1],
+                    // [1,1]
+                ];
+                break;
             case "S":
                 piece.blocks = [
-                [0, 0, 0],
-                [0, 1, 1],
-                [1, 1, 0],
-            ];
-            break;
+                    [0, 0, 0],
+                    [0, 5, 5],
+                    [5, 5, 0]
+                ];
+                break;
             case "T":
                 piece.blocks = [
-                [0, 1, 0],
-                [1, 1, 1],
-                [0, 0, 0],
-            ];
-            break;
+                    [0, 0, 0],
+                    [6, 6, 6],
+                    [0, 6, 0]
+                ];
+                break;
             case "Z":
                 piece.blocks = [
-                [0, 0, 0],
-                [1, 1, 0],
-                [0, 1, 1],
-            ];
-            break;
+                    [0, 0, 0],
+                    [7, 7, 0],
+                    [0, 7, 7]
+                ];
+                break;
             default:
                 throw new Error("Неизвестный тип фигуры");
         }
-
+ 
+        piece.x = Math.floor((10 - piece.blocks[0].length) / 2);
+ 
+        piece.y = -1;
+ 
         return piece;
     }
 }
  
-
-
 class View{
+    static colors ={
+        "1": "cyan",
+        "2": "blue",
+        "3": "orange",
+        "4": "yellow",
+        "5": "green",
+        "6": "purple",
+        "7": "red",
+    }
+
     constructor(element, width, height, rows, columns){
         this.element = element;
         this.width = width;
@@ -198,8 +272,23 @@ class View{
         this.canvas.height = this.height;
         this.context = this.canvas.getContext('2d');
 
-        this.blockWidth = this.width / columns;
-        this.blockHeight = this.height / rows;
+        this.playfieldBorderWidth = 4;
+        this.playfieldX = this.playfieldBorderWidth;
+        this.playfieldY = this.playfieldBorderWidth;
+
+        this.playfieldWidth = (this.width * 2) / 3;
+        this.playfieldHeight = this.height;
+
+        this.playfieldInnerWidth = this.playfieldWidth - this.playfieldBorderWidth * 2;
+        this.playfieldInnerHeight = this.playfieldHeight- this.playfieldBorderWidth * 2;
+        
+        this.blockWidth = this.playfieldInnerWidth/ columns;
+        this.blockHeight = this.playfieldInnerHeight / rows;
+
+        this.panelX = this.playfieldWidth + 10;
+        this.panelY = 0;
+        this.panelWidth = this.width / 3;
+        this.panelHeight = this.height;
 
         this.element.append(this.canvas);
 
@@ -209,39 +298,103 @@ class View{
         this.context.clearRect(0, 0, this.width, this.height);
     }
 
-    render({playfield}){
+    render(state){
         this.clearScreen();
-        this.renderPlayfield(playfield);
+        this.renderPlayfield(state);
+        this.renderPanel(state);
     }
 
-    renderPlayfield(playfield){
+    renderPlayfield({playfield}){
         for(let y = 0; y < playfield.length; y++){
             const line = playfield[y];
             
             for(let x = 0; x < line.length; x++){
                 const block = line[x];
                 if(block){
-                    this.context.fillStyle = "red";
-                    this.context.strokeStyle = "black";
-                    this.context.lineWidth = 2;
-
-                    this.context.fillRect(x * this.blockWidth, y * this.blockHeight, this.blockWidth, this.blockHeight);
-                    this.context.strokeRect(x * this.blockWidth, y * this.blockHeight, this.blockWidth, this.blockHeight);
+                    this.renderBlock(this.playfieldX + (x * this.blockWidth), this.playfieldY + (y * this.blockHeight), this.blockWidth, this.blockHeight, View.colors[block]);
                 }
             }
         }
+
+        this.context.strokeStyle = "white";
+        this.context.lineWidth = this.playfieldBorderWidth;
+        this.context.strokeRect(0, 0, this.playfieldWidth, this.playfieldHeight);
+    }
+
+    renderBlock(x, y , width, height, color){
+        this.context.fillStyle = color;
+        this.context.strokeStyle = "black";
+        this.context.lineWidth = 2;
+
+        this.context.fillRect(x, y , width, height);
+        this.context.strokeRect(x, y , width, height);
+    }
+
+    renderPanel({level, score, lines, nextPiece}){
+        this.context.fillStyle = "white";
+        this.context.textBaseline = "top";
+        this.context.textAlign = "start";
+        this.context.font = "16px Verdana";
+
+        this.context.fillText(`Score: ${score}`, this.panelX, this.panelY + 0);
+        this.context.fillText(`Lines: ${lines}`, this.panelX, this.panelY + 24);
+        this.context.fillText(`Level: ${level}`, this.panelX, this.panelY + 48);
+        this.context.fillText(`Next:`, this.panelX, this.panelY + 96);
+
+        for (let y = 0; y < nextPiece.blocks.length; y++) {
+            for (let x = 0; x < nextPiece.blocks[y].length; x++) {
+                const block = nextPiece.blocks[y][x];
+
+                if(block){
+                    this.renderBlock(
+                        this.panelX + (x * this.blockWidth * 0.5),
+                        this.panelY + 100 + (y * this.blockHeight* 0.5),
+                        this.blockWidth * 0.5,
+                        this.blockHeight * 0.5,
+                        View.colors[block]
+                    )
+                }
+            }
+        }
+    }
+
+    renderStartScreen(){
+        this.context.fillStyle = "white";
+        this.context.font = "18px Verdana";
+        this.context.textAlign = "center";
+        this.context.textBaseline = "middle";
+        this.context.fillText("Press ENTER to Start", this.width / 2, this.height / 2);
+    }
+
+    renderPauseScreen(){
+        this.context.fillStyle = "rgba(0, 0 ,0 , 0.75)";
+        this.context.fillRect(0, 0, this.width, this.height);
+        this.context.fillStyle = "white";
+        this.context.font = "18px Verdana";
+        this.context.textAlign = "center";
+        this.context.textBaseline = "middle";
+        this.context.fillText("Press ENTER to Resume", this.width / 2, this.height / 2);
+    }
+
+    renderEndScreen({score}){
+        this.clearScreen();
+        this.context.fillStyle = "white";
+        this.context.font = "18px Verdana";
+        this.context.textAlign = "center";
+        this.context.textBaseline = "middle";
+        this.context.fillText("GAME IS OVER", this.width / 2, this.height / 2 - 48);
+        this.context.fillText(`Score: ${score}`, this.width / 2, this.height / 2);
     }
 }
 
 const game = new Game();
 const root = document.getElementById("root");
-const view = new View(root, 320, 640, 20, 10);
-//view.renderPlayfield(game.playfield);
-//console.log(game.playfield);
-
+const view = new View(root, 480, 640, 20, 10);
 
 document.addEventListener("keydown", event =>{
     switch(event.keyCode){ // which
+        case 13:
+            view.render(game.getState());
         case 37:
             game.moveIsLeft();
             view.render(game.getState());
@@ -261,3 +414,8 @@ document.addEventListener("keydown", event =>{
 
     }
 })
+
+view.render(game.getState());
+//view.renderStartScreen(game.getState());
+//view.renderPauseScreen(game.getState());
+//view.renderEndScreen(game.getState());h

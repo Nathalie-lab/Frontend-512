@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Paint</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="panel-control">
+        <button id="clear">Очистить</button>
+        <button id="eraser">Ластик</button>
+        <button id="draw" class="active">Кисть</button>
+
+        <label for="colors">Цвет:</label>
+        <input type="color" id="colors" value="#000000">
+
+        <label for="size">Размер:</label>
+        <input type="range" id="size" min="1" max="50" value="5">
+        
+        <span id="sizeValue">5</span>px
+    </div>
+    
+    <canvas id="test" width="500" height="500" style="border: 1px solid #000">Текст показывается, если элемент не поддерживается</canvas>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
