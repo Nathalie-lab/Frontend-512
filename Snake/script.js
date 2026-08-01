@@ -43,7 +43,6 @@ class View {
     }
 }
 
-
 const game = new Game();
 const view = new View();
 

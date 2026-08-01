@@ -1,24 +1,32 @@
 class Game {
-
+ 
     static points = {
         "1": 40,
         "2": 100,
         "3": 300,
-        "4": 1200,
+        "4": 1200
     };
-
-    score = 0;
-    lines = 0;
-
-    playfield = this.createPlayfield();
  
-    activePiece = this.createPiece();
-    nextPiece = this.createPiece();
- 
-    getLevel(){
-        return Math.floor(this.lines / 10) + 1;
+    constructor(){
+        this.reset();
     }
 
+    reset(){
+        this.score = 0;
+        this.lines = 0;
+ 
+        this.topOut = false;
+
+        this.playfield = this.createPlayfield();
+ 
+        this.activePiece = this.createPiece();
+        this.nextPiece = this.createPiece(); 
+    }
+
+    getLevel() {
+        return Math.floor(this.lines / 10) + 1;
+    }
+ 
     getState() {
         const playfield = this.createPlayfield();
         const { y: pieceY, x: pieceX, blocks } = this.activePiece;
@@ -44,7 +52,8 @@ class Game {
             level: this.getLevel(),
             lines: this.lines,
             nextPiece: this.nextPiece,
-            playfield
+            playfield,
+            isGameOver: this.topOut,
         }
     }
  
@@ -65,6 +74,11 @@ class Game {
     }
  
     moveIsDown() {
+
+        if(this.topOut){
+            return;
+        }
+
         this.activePiece.y++;
  
         if (this.hasCollision()) {
@@ -74,46 +88,51 @@ class Game {
             this.updateScore(clearLines);
             this.updatePieces();
         }
+        
+        if(this.hasCollision()){
+            this.topOut = true;
+        }
     }
-
-    updateScore(clearedLines){
-        if(clearedLines > 0){
-            this.score += Game.points[clearedLines];
+ 
+    updateScore(clearedLines) {
+        if (clearedLines > 0) {
             this.lines += clearedLines;
+            this.score += Game.points[clearedLines]; // * (this.getLevel());   40 + 100 * (1+1)
             console.log(this.score, this.lines, this.getLevel());
         }
     }
-
-    clearLines(){
+ 
+    clearLines() {
         const rows = 20;
         const columns = 10;
         let lines = [];
+ 
         for (let y = rows - 1; y >= 0; y--) {
             let numberOfBlocks = 0;
-
+ 
             for (let x = 0; x < columns; x++) {
-                if(this.playfield[y][x]){
+                if (this.playfield[y][x]) {
                     numberOfBlocks++;
                 }
             }
-
-            if(numberOfBlocks === 0){
+ 
+            if (numberOfBlocks === 0) {
                 break;
-            }else if(numberOfBlocks < columns){
+            } else if (numberOfBlocks < columns) {
                 continue;
-            } else{
+            } else {  // numberOfBlocks === columns
                 lines.unshift(y);
             }
         }
-
+ 
         for (let index of lines) {
             this.playfield.splice(index, 1);
-            this.playfield.unshift(new Array(columns).fill(0)); 
+            this.playfield.unshift(new Array(columns).fill(0));
         }
-
+ 
         return lines.length;
     }
-
+ 
     hasCollision() {
         const { y: pieceY, x: pieceX, blocks } = this.activePiece;
  
@@ -250,148 +269,246 @@ class Game {
         return piece;
     }
 }
+
+class View {
  
-class View{
-    static colors ={
+    static colors = {
         "1": "cyan",
         "2": "blue",
         "3": "orange",
         "4": "yellow",
         "5": "green",
         "6": "purple",
-        "7": "red",
+        "7": "red"
     }
-
-    constructor(element, width, height, rows, columns){
+ 
+    constructor(element, width, height, rows, columns) {
         this.element = element;
         this.width = width;
-        this.height = height ;
-
+        this.height = height;
+ 
         this.canvas = document.createElement("canvas");
         this.canvas.width = this.width;
         this.canvas.height = this.height;
         this.context = this.canvas.getContext('2d');
-
+ 
         this.playfieldBorderWidth = 4;
         this.playfieldX = this.playfieldBorderWidth;
         this.playfieldY = this.playfieldBorderWidth;
-
-        this.playfieldWidth = (this.width * 2) / 3;
+        this.playfieldWidth = this.width * 2 / 3;
         this.playfieldHeight = this.height;
-
         this.playfieldInnerWidth = this.playfieldWidth - this.playfieldBorderWidth * 2;
-        this.playfieldInnerHeight = this.playfieldHeight- this.playfieldBorderWidth * 2;
-        
-        this.blockWidth = this.playfieldInnerWidth/ columns;
+        this.playfieldInnerHeight = this.playfieldHeight - this.playfieldBorderWidth * 2;
+ 
+        this.blockWidth = this.playfieldInnerWidth / columns;
         this.blockHeight = this.playfieldInnerHeight / rows;
-
+ 
         this.panelX = this.playfieldWidth + 10;
         this.panelY = 0;
         this.panelWidth = this.width / 3;
         this.panelHeight = this.height;
-
+ 
         this.element.append(this.canvas);
-
     }
-
-    clearScreen(){
+ 
+    clearScrean() {
         this.context.clearRect(0, 0, this.width, this.height);
     }
-
-    render(state){
-        this.clearScreen();
+ 
+    render(state) {
+        this.clearScrean();
         this.renderPlayfield(state);
         this.renderPanel(state);
     }
-
-    renderPlayfield({playfield}){
-        for(let y = 0; y < playfield.length; y++){
+ 
+    renderPlayfield({ playfield }) {
+        for (let y = 0; y < playfield.length; y++) {
             const line = playfield[y];
-            
-            for(let x = 0; x < line.length; x++){
+ 
+            for (let x = 0; x < line.length; x++) {
                 const block = line[x];
-                if(block){
+                if (block) {
                     this.renderBlock(this.playfieldX + (x * this.blockWidth), this.playfieldY + (y * this.blockHeight), this.blockWidth, this.blockHeight, View.colors[block]);
+
                 }
             }
         }
-
+ 
         this.context.strokeStyle = "white";
         this.context.lineWidth = this.playfieldBorderWidth;
         this.context.strokeRect(0, 0, this.playfieldWidth, this.playfieldHeight);
     }
-
-    renderBlock(x, y , width, height, color){
+ 
+    renderBlock(x, y, width, height, color) {
         this.context.fillStyle = color;
         this.context.strokeStyle = "black";
         this.context.lineWidth = 2;
-
-        this.context.fillRect(x, y , width, height);
-        this.context.strokeRect(x, y , width, height);
+ 
+        this.context.fillRect(x, y, width, height);
+        this.context.strokeRect(x, y, width, height);
     }
-
-    renderPanel({level, score, lines, nextPiece}){
+ 
+    renderPanel({ level, score, lines, nextPiece }) {
         this.context.fillStyle = "white";
         this.context.textBaseline = "top";
         this.context.textAlign = "start";
         this.context.font = "16px Verdana";
-
+ 
         this.context.fillText(`Score: ${score}`, this.panelX, this.panelY + 0);
         this.context.fillText(`Lines: ${lines}`, this.panelX, this.panelY + 24);
         this.context.fillText(`Level: ${level}`, this.panelX, this.panelY + 48);
         this.context.fillText(`Next:`, this.panelX, this.panelY + 96);
-
+ 
         for (let y = 0; y < nextPiece.blocks.length; y++) {
             for (let x = 0; x < nextPiece.blocks[y].length; x++) {
                 const block = nextPiece.blocks[y][x];
-
-                if(block){
+ 
+                if (block) {
                     this.renderBlock(
                         this.panelX + (x * this.blockWidth * 0.5),
-                        this.panelY + 100 + (y * this.blockHeight* 0.5),
+                        this.panelY + 100 + (y * this.blockHeight * 0.5),
                         this.blockWidth * 0.5,
                         this.blockHeight * 0.5,
                         View.colors[block]
-                    )
+                    );
                 }
             }
         }
     }
-
-    renderStartScreen(){
+ 
+    renderStartScreen() {
         this.context.fillStyle = "white";
         this.context.font = "18px Verdana";
         this.context.textAlign = "center";
         this.context.textBaseline = "middle";
         this.context.fillText("Press ENTER to Start", this.width / 2, this.height / 2);
     }
-
-    renderPauseScreen(){
-        this.context.fillStyle = "rgba(0, 0 ,0 , 0.75)";
+ 
+    renderPauseScreen() {
+        this.context.fillStyle = "rgba(0,0,0,0.75)";
         this.context.fillRect(0, 0, this.width, this.height);
+ 
         this.context.fillStyle = "white";
         this.context.font = "18px Verdana";
         this.context.textAlign = "center";
         this.context.textBaseline = "middle";
         this.context.fillText("Press ENTER to Resume", this.width / 2, this.height / 2);
     }
-
-    renderEndScreen({score}){
-        this.clearScreen();
+ 
+    renderEndScreen({ score }) {
+        this.clearScrean();
+ 
         this.context.fillStyle = "white";
         this.context.font = "18px Verdana";
         this.context.textAlign = "center";
         this.context.textBaseline = "middle";
-        this.context.fillText("GAME IS OVER", this.width / 2, this.height / 2 - 48);
+ 
+        this.context.fillText("GAME OVER", this.width / 2, this.height / 2 - 48);
         this.context.fillText(`Score: ${score}`, this.width / 2, this.height / 2);
     }
 }
+ 
+//класс для управления 
+class Controller {
+    constructor(game, view) {
+        this.game = game;
+        this.view = view;
+        this.intervalId = null;
+        this.isPlaying = false;
+
+        document.addEventListener("keydown", this.handleKeyDown.bind(this));
+        this.view.renderStartScreen();
+    }
+
+    play(){
+        this.isPlaying = true;
+        this.startTimer();
+        this.updateView();
+    }
+
+    pause(){
+        this.isPlaying = false;
+        this.stopTimer();
+        this.updateView();
+    }
+
+    reset(){
+        this.game.reset();
+        this.play();
+    }
+
+    updateView(){
+        const state = this.game.getState();
+
+        if(state.isGameOver){
+            this.view.renderEndScreen(state);
+        }else if(!this.isPlaying){
+            this.view.renderPauseScreen();
+        }else{
+            this.view.render(state);
+        }
+    }
+
+    startTimer(){
+        const speed = 1000 - this.game.getState().level * 100;
+
+        if(!this.intervalId){
+            this.intervalId = setInterval(()=> {
+                this.update();
+            }, speed > 0 ? speed : 100);
+        }
+    }
+
+    stopTimer(){
+        if(this.intervalId){
+            clearInterval(this.intervalId);
+            this.intervalId = null;
+        }
+    }
+
+    update(){
+        this.game.moveIsDown();
+        this.updateView();
+    }
+
+    handleKeyDown(event) {
+        const state = this.game.getState();
+        switch (event.which) {
+            case 13:
+                if(state.isGameOver){
+                    this.reset();
+                }else if(this.isPlaying){
+                    this.pause();
+                } else{
+                    this.play();
+                }
+                break;
+            case 37:
+                this.game.moveIsLeft();
+                this.updateView();
+                break;
+            case 38:
+                this.game.rotationPiece();
+                this.updateView();
+                break;
+            case 39:
+                this.game.moveIsRight();
+                this.updateView();
+                break;
+            case 40:
+                this.game.moveIsDown();
+                this.updateView();
+                break;
+        }
+    }
+};
 
 const game = new Game();
-const root = document.getElementById("root");
+const root = document.querySelector("#root");
 const view = new View(root, 480, 640, 20, 10);
+const controller = new Controller(game, view);
 
-document.addEventListener("keydown", event =>{
+/* document.addEventListener("keydown", event =>{
     switch(event.keyCode){ // which
         case 13:
             view.render(game.getState());
@@ -413,9 +530,9 @@ document.addEventListener("keydown", event =>{
             break;
 
     }
-})
+}) */
 
-view.render(game.getState());
+//view.render(game.getState());
 //view.renderStartScreen(game.getState());
 //view.renderPauseScreen(game.getState());
 //view.renderEndScreen(game.getState());h
