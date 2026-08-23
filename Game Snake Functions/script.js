@@ -84,6 +84,12 @@ function gameLoop(){
     }
     snake.unshift(head);
     
+    if(head.x === foot.x && head.y === foot.y){
+        do{
+            foot = this.getRandomFoodPosition();
+        }while(this.snake.some(segment => segment.x === foot.x && segment.y === foot.y))
+    }
+
     if(head.x < 0  || head.x >= canvas.width || head.y >= canvas.height || head.y < 0){
         gameOver();
         return;
@@ -96,8 +102,8 @@ function gameLoop(){
         }
     }
 
-    if(head.x === food.x && head.y === food.y){
-        food = getRandomFoodPosition();
+//if(head.x === food.x && head.y === food.y){
+//food = getRandomFoodPosition();
         score++;
         scoreEl.textContent = `Счет: ${score}`;
         if(gameSpeed > 50){
@@ -109,8 +115,7 @@ function gameLoop(){
 
     if(snake.length > 0){
         setTimeout(gameLoop, gameSpeed);
-    }
-};
+    };
 
 //Смена направления при нажатии стрелки
 function changeDirection(event){

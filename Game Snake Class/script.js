@@ -80,6 +80,7 @@ class Game {
 
         this.snake.unshift(head);
 
+
         if (head.x < 0 || head.x >= this.canvas.width || head.y >= this.canvas.height || head.y < 0) {
             this.gameOver();
             return;
