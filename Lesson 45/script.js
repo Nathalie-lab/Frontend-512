@@ -435,6 +435,7 @@ for(let i = 0; i <= 10000000; i++){
     myMap.delete(i);
 }
 console.log(new Date().getTime() - start2); */
+<<<<<<< HEAD
 
 
 
@@ -562,5 +563,132 @@ console.log(unique);
 console.log([...unique]); */
 
 //AJAX - Asynchronous JavaScripts And XML(JSON) - это технология взаимодействия с сервером.
+=======
+>>>>>>> 376c37e (ajaxNew)
 
 
+
+
+// ==================== SET ======================
+//элементы в сет не могут повторяться. ключей нет. индексы не работают.
+
+//const set = new Set();
+//set.add(5);
+//set.add(9);
+//set.add(5);
+
+//console.log(set);
+//console.log(set.size); //количество элементов в сете
+
+//const set = new Set([1,2,3,4,5,5,6,6]); //убирает одинаковые элементы
+//console.log(set);
+/* console.log(set.has(4)); //проверить наличие элемента
+console.log(set.has(4)); */
+
+/* set.delete(4); //удалить элемент
+console.log(set); */
+
+/* set.clear(); // очищает все
+console.log(set); */
+
+//Можно использовать два цикла for ... of / forEach
+/* for(let elem of set){
+    console.log(elem);  
+}; */
+
+//set.forEach(value => document.writeln(value + "<br>"));
+
+
+// =========== ПРЕОБРАЗОВАНИЕ сет в массив ============
+
+/* let arr = [...set];
+console.log(arr); */
+
+/* let arr1 = Array.from(set);
+console.log(arr1); */
+
+
+// =========== ПРЕОБРАЗОВАНИЕ массива в сет ============
+
+/* let mas = [5, 9, 2];
+let set = new Set(mas);
+console.log(set); */
+
+//Вариант 1
+/* let mas1 = [...set];
+console.log(mas1); */
+
+//Вариант 2
+/* let mas = [5, 9, 2, 9, 2];
+console.log(mas);
+
+let mas1 = [...new Set(mas)];
+console.log(mas1); */
+
+
+//ЗАДАЧА. Система уникальных посетителей за день на сайте
+
+/* class VisitorTracker{
+    constructor(){
+        this.visitors = new Set();
+        this.totalVisitors = 0;
+    }
+
+    registerVisit(userId){
+        this.totalVisitors++;
+        this.visitors.add(userId);
+    }
+
+    getUniqueCount(){
+        return this.visitors.size
+    }
+
+    getNewVisitorPercent(){
+        if(this.totalVisitors === 0){
+            return 0;
+        }
+        return (this.visitors.size /this.totalVisitors) * 100;
+    }
+}; */
+
+/* const tracker = new VisitorTracker();
+tracker.registerVisit("user_1");
+tracker.registerVisit("user_2");
+tracker.registerVisit("user_1");
+tracker.registerVisit("user_3");
+tracker.registerVisit("user_2"); */
+
+/* console.log(`Всего визитов: ${tracker.totalVisitors}`);
+console.log(`Уникальных посетителей: ${tracker.getUniqueCount()}`);
+console.log(`Процент новых посетителей: ${tracker.getNewVisitorPercent()}%`); */
+
+
+
+const one = new Set(['first', 'second', 'third', 'fourth']);
+const two = new Set(['second', 'fifth', 'fourth', 'sixth']);
+
+// для объединения
+const uni = one.union(two); 
+console.log(uni);
+console.log([...uni]);
+
+//ищем одинаковые элементы
+const both = one.intersection(two);
+console.log(both);
+console.log([...both]);
+
+//берет 1 сет и вычитает 2 сет
+const onlyOne = one.difference(two);
+console.log(onlyOne);
+console.log([...onlyOne]);
+
+const onlyTwo = two.difference(one);
+console.log(onlyTwo);
+console.log([...onlyTwo]);
+
+//симметричная разность - берет то, что уникально из разных сетов и объединяет
+const unique = one.symmetricDifference(two);
+console.log(unique);
+console.log([...unique]);
+
+//AJAX - Asynchronous JavaScripts And XML(JSON) - это технология взаимодействия с сервером.

@@ -31,7 +31,11 @@ request.onreadystatechange = function(){
 } */
 
 
+<<<<<<< HEAD
 let inputRub = document.querySelector("#rub");
+=======
+/* let inputRub = document.querySelector("#rub");
+>>>>>>> 376c37e (ajaxNew)
 let inputUsd = document.querySelector("#usd");
 let inputEur = document.querySelector("#eur");
 
@@ -59,7 +63,11 @@ inputRub.addEventListener("input", () => {
         }
 }); 
 });  
+<<<<<<< HEAD
  
+=======
+  */
+>>>>>>> 376c37e (ajaxNew)
 
 
 /* let inputRub = document.querySelector("#rub");
@@ -116,6 +124,146 @@ function req(){
 
                 document.querySelector(".app").append(card);
             }
+<<<<<<< HEAD
         }
     })
 } */
+=======
+        } else {
+            //console.log("Что-то пошло не так");
+            console.error("Что-то пошло не так");
+        } 
+    })
+    this.remove(); // удаляет кнопку "Клик", когда функция отработала
+} */
+
+
+
+/* let form = document.form1; //доступ к форме
+
+let message = {
+    loading: "Загрузка",
+    success: "Скоро мы с Вами свяжемся",
+    failure: "Что-то пошло не так",
+};
+
+form.addEventListener("submit", (e) => {
+    e.preventDefault(); //отменяем действие элемента по умолчанию
+    
+    let stmsg = document.createElement("div");
+    stmsg.textContent = message.loading;
+    form.append(stmsg);
+
+    let request = new XMLHttpRequest();
+    request.open("POST", "server.php");
+
+
+    let formData = new FormData(form); //собирает данные из полей формы
+    request.send(formData); //отправляем данные на сервер php
+
+    request.addEventListener("load", function(){
+        if(request.status === 200){
+            console.log(request.response);
+            stmsg.textContent = message.success;
+            form.reset();
+            setTimeout(() =>{
+                stmsg.remove();
+            }, 3000);
+        }else{
+            stmsg.textContent = message.failure;
+        }
+    })
+}) */
+
+
+
+// ============ ТОВАРЫ ===================
+
+let request = new XMLHttpRequest();
+request.open("GET", "goods.json");
+request.send();
+
+let res = document.querySelector(".result");
+let items, prices;
+
+request.addEventListener("load", () => {
+    if(request.status === 200){
+        items = JSON.parse(request.response);
+        //console.log(items);
+
+        items.forEach(item => {
+            (typeof item.price === "string") ? prices = item.price : prices = item.price.new;
+
+
+            res.innerHTML += `
+                <h3>${item.name}</h3>
+                <div>${prices}</div>
+                <div>${item.ratingRevievs}</div>
+                <hr>
+            `;
+        });
+
+        document.querySelector(".feet").addEventListener("click", () => sortByFeedbacks(items));
+
+        document.querySelector(".price").addEventListener("click", () => sortByPrice(items));
+    }
+});
+
+function sortByPrice(arr){
+    const temp = JSON.parse(JSON.stringify(arr));
+    temp.forEach(item => {
+        if(typeof item.price === "string"){
+            item.price = +item.price.replace(/\D/g,"")
+        }else{
+            item.price = +item.price.new.replace(/\D/g,"")
+        }
+    });
+    
+    temp.sort((a,b)=> a.price > b.price ? 1 : -1);
+    res.innerHTML = "";
+
+    let mas = ["рублей", "рубль", "рубля"];
+
+
+    temp.forEach(item => {
+            res.innerHTML += `
+                <h3>${item.name}</h3>
+                <div>Цена: ${item.price} ${countItems(item.price)(mas)} </div>
+                <hr>
+            `;
+        });    
+}
+
+function sortByFeedbacks(arr){
+    const temp = JSON.parse(JSON.stringify(arr));
+    //temp[1].price = "0";
+    //console.log(temp[1]);
+    temp.forEach(item => {
+        item.ratingRevievs = +item.ratingRevievs.replace(/\D/g,"");
+        //console.log(item.ratingRevievs);
+    })
+    
+    temp.sort((a,b)=> a.ratingRevievs > b.ratingRevievs ? 1 : -1);
+    //console.log(temp);
+    res.innerHTML = "";
+
+    let mas = ["отзывов", "отзыв", "отзыва"];
+
+
+
+    temp.forEach(item => {
+            res.innerHTML += `
+                <h3>${item.name}</h3>
+                <div>${item.ratingRevievs} ${countItems(item.ratingRevievs)(mas)}</div>
+                <hr>
+            `;
+        });
+};
+
+function countItems(num){
+    let n = num % 10;
+    let m = num % 100;
+    let chislo = n == 1 && m != 11 ? 1 : 2 <= n && n <= 4 && !(12 <= m && m <= 14) ? 2 : 0;
+    return arr => arr[chislo];
+}
+>>>>>>> 376c37e (ajaxNew)

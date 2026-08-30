@@ -1,0 +1,28 @@
+{
+  "goods": [
+    {
+        "name": "Сhandelier",
+        "img": "images/chand.jpeg",
+        "price": "34 000 рублей",
+        "ratingRevievs": "43 отзыва"
+    },
+    {
+        "name": "Sofa",
+        "img": "images/sofa.jpeg",
+        "price": "25 000 рублей",
+        "ratingRevievs": "11 отзывов"
+    },
+    {
+        "name": "Table",
+        "img": "images/table.jpg",
+        "price": "10 000 рублей",
+        "ratingRevievs": "24 отзыва"
+    },
+    {
+        "name": "Armchair",
+        "img": "images/armchair.jpg",
+        "price": "17 000 рублей",
+        "ratingRevievs": "1 отзыв"
+    }
+  ]
+}
