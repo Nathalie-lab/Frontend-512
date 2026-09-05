@@ -160,7 +160,7 @@ function load(){
 
 
 
-document.querySelector("#load").addEventListener("click", load);
+/* document.querySelector("#load").addEventListener("click", load);
 
 async function load() {
     try{
@@ -175,4 +175,47 @@ async function load() {
     } catch(error){
         console.error("Ошибка при загрузке:", error); 
     }
+} */
+
+
+
+
+document.querySelector("#load").addEventListener("click", load);
+document.querySelector("#undone").addEventListener("click", undone);
+
+async function load() {
+    try {
+        let url = "https://jsonplaceholder.typicode.com/todos";
+        let response = await fetch(url);
+        let data = await response.json();
+
+        document.querySelector("#list").innerHTML = "";
+        let html = data.map(function (item) {
+            if (item.completed === true) {
+                return "<li>" + "Пользователь: " + item.userId + " выполнил задачу № " + item.id + " (" + item.title + ")" + "</li>"
+            }
+        })
+        document.querySelector("#list").insertAdjacentHTML("afterbegin", html.join(" "));
+    } catch (error) {
+        console.error("Ошибка при загрузке:", error);
+    }
 }
+
+//Функция для невыполненных задач
+async function undone() {
+    try {
+        let url = "https://jsonplaceholder.typicode.com/todos";
+        let response = await fetch(url);
+        let data = await response.json();
+
+        document.querySelector("#list").innerHTML = "";
+        let html = data.map(function (item) {
+            if (item.completed === false) {
+                return "<li>" + "Пользователь: " + item.userId + " не выполнил задачу № " + item.id + " (" + item.title + ")" + "</li>"
+            }
+        })
+        document.querySelector("#list").insertAdjacentHTML("afterbegin", html.join(" "));
+    } catch (error) {
+        console.error("Ошибка при загрузке:", error);
+    }
+}    
